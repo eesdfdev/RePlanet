@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Terrain
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Body
+    uniqueID: 123057349
+    locked: 0
+  - name: Socks
+    uniqueID: 597015211
+    locked: 0
+  - name: Hair
+    uniqueID: 1964773281
+    locked: 0
+  - name: Foot
+    uniqueID: 3272118119
+    locked: 0
+  - name: Face
+    uniqueID: 3860940979
+    locked: 0
+  - name: Hair
+    uniqueID: 2472656437
+    locked: 0
+  - name: Wand
+    uniqueID: 892233319
+    locked: 0
+  - name: Upper
+    uniqueID: 1925938313
+    locked: 0
+  - name: Globe
+    uniqueID: 911312655
+    locked: 0
+  - name: Cap
+    uniqueID: 3460962707
+    locked: 0
