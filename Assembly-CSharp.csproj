@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\GlobeManager.cs" />
     <Compile Include="Assets\Scripts\SkipSplash.cs" />
+    <Compile Include="Assets\SkyShader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
