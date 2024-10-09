@@ -42,7 +42,7 @@ public class Character : MonoBehaviour
         bool WalkN = false;
         bool Flip = spriteRenderer.flipX;
         bool FlipZ = animator.GetBool("FlipZ");
-        //�ִϸ��̼� boolean ����
+        //캐릭터 애니메이션
         {
             if (horizontal != 0)
             {
