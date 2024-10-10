@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,18 +6,20 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    public GameObject body;
     private GameObject player;
     private Rigidbody rb;
-    private Animator animator;
+    //private Animator animator;
     private Animator[] animators;
     private SpriteRenderer spriteRenderer;
-  
+
+    public Vector3 moveVec;
     public float MoveSpeed = 5f;
     private void Start()
     {
         player = GetComponent<GameObject>();
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
         animators = GetComponentsInChildren<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -31,17 +34,16 @@ public class Character : MonoBehaviour
         {
             Application.Quit();
         }
-    }
-    void FixedUpdate()
-    {
+        
+        
         float horizontal = Input.GetAxis("Horizontal");
-        float vectical = Input.GetAxis("Vertical");
+        float vertical = Input.GetAxis("Vertical");
 
         bool WalkingX = false;
         bool WalkS = false;
         bool WalkN = false;
-        bool Flip = spriteRenderer.flipX;
-        bool FlipZ = animator.GetBool("FlipZ");
+        bool Flip = Math.Abs(body.transform.eulerAngles.y - 180f) < 0.1f;
+        bool FlipZ = animators[0].GetBool("FlipZ");
         //캐릭터 애니메이션
         {
             if (horizontal != 0)
@@ -54,15 +56,15 @@ public class Character : MonoBehaviour
             }
             else
                 WalkingX = false;
-            if (vectical != 0)
+            if (vertical != 0)
             {
-                if (vectical < 0)
+                if (vertical < 0)
                 {
                     WalkS = true;
                     WalkN = false;
                     FlipZ = false;
                 }
-                if (vectical > 0)
+                if (vertical > 0)
                 {
                     WalkS = false;
                     WalkN = true;
@@ -75,21 +77,20 @@ public class Character : MonoBehaviour
                 WalkS = false;
             }
         }
-        spriteRenderer.flipX = Flip;
-        animator.SetBool("WalkingX", WalkingX);
-        animator.SetBool("WalkS", WalkS);
-        animator.SetBool("WalkN", WalkN);
-        animator.SetBool("Flip", Flip);
-        animator.SetBool("FlipZ", FlipZ);
-        foreach (Animator itemAnimator in animators)
+        body.transform.eulerAngles = new Vector3(Flip?-30f:30f,Flip?180f:0f,body.transform.eulerAngles.z) ;
+        foreach (var animator in animators)
         {
-            itemAnimator.SetBool("WalkingX", WalkingX);
-            itemAnimator.SetBool("WalkS", WalkS);
-            itemAnimator.SetBool("WalkN", WalkN);
-            itemAnimator.SetBool("Flip", Flip);
+            animator.SetBool("WalkingX", WalkingX);
+            animator.SetBool("WalkS", WalkS);
+            animator.SetBool("WalkN", WalkN);
+            animator.SetBool("Flip", Flip);
+            animator.SetBool("FlipZ", FlipZ);
         }
-
-
-        rb.velocity = new Vector3(horizontal * MoveSpeed, rb.velocity.y, vectical * MoveSpeed);
+        moveVec = new Vector3(horizontal, 0, vertical);
+        moveVec.Normalize();
+    }
+    void FixedUpdate()
+    {
+        rb.velocity = new Vector3(moveVec.x * MoveSpeed, rb.velocity.y, moveVec.z * MoveSpeed);
     }
 }
