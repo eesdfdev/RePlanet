@@ -36,6 +36,34 @@ public class Character : MonoBehaviour
         
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+        int LRRotated = animators[0].GetInteger("LRRotated");
+        bool BackRotated = animators[0].GetBool("BackRotated");
+        bool Walking = false;
+        bool LRSetted = false;
+        {
+            if (horizontal != 0)
+            {
+                Walking = true;
+                LRSetted = true;
+                BackRotated = false; //뒤에 돌아있는 상태에서 양엎으로 움직이면 왼오로 변환됨.
+                if (horizontal > 0)
+                    LRRotated = 1;
+                else
+                    LRRotated = -1;
+            }
+            else
+                Walking = false;
+            if (vertical != 0)
+            {
+                Walking = true;
+                if (vertical < 0)
+                    BackRotated = false;
+                else
+                    BackRotated = true;
+                if (!LRSetted)
+                    LRRotated = 0;
+            }               
+        }
         /*
         bool WalkingX = false;
         bool WalkS = false;
@@ -75,19 +103,19 @@ public class Character : MonoBehaviour
                 WalkS = false;
             }
         }
-        body.transform.eulerAngles = new Vector3(Flip?-30f:30f,Flip?180f:0f,body.transform.eulerAngles.z) ;
+        */
+        
+        body.transform.eulerAngles = new Vector3(LRRotated == 1 ? -30f : 30f, LRRotated == 1 ? -180 : 0f, body.transform.eulerAngles.z);
         foreach (var animator in animators)
         {
-            animator.SetBool("WalkingX", WalkingX);
-            animator.SetBool("WalkS", WalkS);
-            animator.SetBool("WalkN", WalkN);
-            animator.SetBool("Flip", Flip);
-            animator.SetBool("FlipZ", FlipZ);
+            animator.SetBool("Walking", Walking);
+            animator.SetBool("BackRotated", BackRotated);
+            animator.SetInteger("LRRotated", LRRotated);
         }
-        */
         moveVec = new Vector3(horizontal, 0, vertical);
-        moveVec.Normalize();
+        //moveVec.Normalize(); 미끄러지는 느낌 나서 삭제
     }
+ 
     void FixedUpdate()
     {
         rb.velocity = new Vector3(moveVec.x * MoveSpeed, rb.velocity.y, moveVec.z * MoveSpeed);
