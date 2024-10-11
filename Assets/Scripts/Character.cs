@@ -7,7 +7,6 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     public GameObject body;
-    private GameObject player;
     private Rigidbody rb;
     //private Animator animator;
     private Animator[] animators;
@@ -17,7 +16,6 @@ public class Character : MonoBehaviour
     public float MoveSpeed = 5f;
     private void Start()
     {
-        player = GetComponent<GameObject>();
         rb = GetComponent<Rigidbody>();
         //animator = GetComponent<Animator>();
         animators = GetComponentsInChildren<Animator>();
@@ -28,7 +26,7 @@ public class Character : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             rb.velocity = Vector3.zero;
-            player.transform.position = new Vector3(0, 2.7f, 0);
+            gameObject.transform.position = new Vector3(0, 2.7f, 0);
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -38,7 +36,7 @@ public class Character : MonoBehaviour
         
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-
+        /*
         bool WalkingX = false;
         bool WalkS = false;
         bool WalkN = false;
@@ -86,6 +84,7 @@ public class Character : MonoBehaviour
             animator.SetBool("Flip", Flip);
             animator.SetBool("FlipZ", FlipZ);
         }
+        */
         moveVec = new Vector3(horizontal, 0, vertical);
         moveVec.Normalize();
     }
