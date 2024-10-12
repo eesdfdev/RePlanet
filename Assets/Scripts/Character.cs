@@ -14,12 +14,16 @@ public class Character : MonoBehaviour
 
     public Vector3 moveVec;
     public float MoveSpeed = 5f;
+
+    public int jumpCnt = 0;
+    
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         //animator = GetComponent<Animator>();
         animators = GetComponentsInChildren<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        Physics.gravity = new Vector3(0f, -24f, 0f);
     }
     void Update()
     {
@@ -32,10 +36,16 @@ public class Character : MonoBehaviour
         {
             Application.Quit();
         }
-        
+
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            Jump();
+        }
         
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+        
         int LRRotated = animators[0].GetInteger("LRRotated");
         bool BackRotated = animators[0].GetBool("BackRotated");
         bool Walking = false;
@@ -64,48 +74,8 @@ public class Character : MonoBehaviour
                     LRRotated = 0;
             }               
         }
-        /*
-        bool WalkingX = false;
-        bool WalkS = false;
-        bool WalkN = false;
-        bool Flip = Math.Abs(body.transform.eulerAngles.y - 180f) < 0.1f;
-        bool FlipZ = animators[0].GetBool("FlipZ");
-        //캐릭터 애니메이션
-        {
-            if (horizontal != 0)
-            {
-                WalkingX = true;
-                if (horizontal > 0)
-                    Flip = true;
-                else
-                    Flip = false;
-            }
-            else
-                WalkingX = false;
-            if (vertical != 0)
-            {
-                if (vertical < 0)
-                {
-                    WalkS = true;
-                    WalkN = false;
-                    FlipZ = false;
-                }
-                if (vertical > 0)
-                {
-                    WalkS = false;
-                    WalkN = true;
-                    FlipZ = true;
-                }
-            }
-            else
-            {
-                WalkN = false;
-                WalkS = false;
-            }
-        }
-        */
         
-        body.transform.eulerAngles = new Vector3(LRRotated == 1 ? -30f : 30f, LRRotated == 1 ? -180 : 0f, body.transform.eulerAngles.z);
+        body.transform.eulerAngles = new Vector3(LRRotated == 1 ? -40f : 40f, LRRotated == 1 ? -180 : 0f, body.transform.eulerAngles.z);
         foreach (var animator in animators)
         {
             animator.SetBool("Walking", Walking);
@@ -113,11 +83,28 @@ public class Character : MonoBehaviour
             animator.SetInteger("LRRotated", LRRotated);
         }
         moveVec = new Vector3(horizontal, 0, vertical);
-        //moveVec.Normalize(); 미끄러지는 느낌 나서 삭제
+        moveVec.Normalize(); //이동 벡터 정규화
     }
- 
+
+    private void Jump()
+    {
+        if (jumpCnt >= 2) return;
+        
+        //무브 벡터 방향으로 점프
+        rb.velocity = new Vector3(moveVec.x * MoveSpeed, 12f, moveVec.z * MoveSpeed);
+        jumpCnt++;
+    }
+
     void FixedUpdate()
     {
-        rb.velocity = new Vector3(moveVec.x * MoveSpeed, rb.velocity.y, moveVec.z * MoveSpeed);
+        if (jumpCnt == 0) //지면 이동
+        {
+            rb.velocity = new Vector3(moveVec.x * MoveSpeed, rb.velocity.y, moveVec.z * MoveSpeed);
+        }
+
+        if (rb.velocity.y == 0)
+        {
+            jumpCnt = 0;
+        }
     }
 }
