@@ -16,6 +16,7 @@ public class Character : MonoBehaviour
     public float MoveSpeed = 5f;
 
     public int jumpCnt = 0;
+    public bool isJumping = false;
     
     private void Start()
     {
@@ -79,6 +80,7 @@ public class Character : MonoBehaviour
         foreach (var animator in animators)
         {
             animator.SetBool("Walking", Walking);
+            animator.SetBool("Jumping", isJumping);
             animator.SetBool("BackRotated", BackRotated);
             animator.SetInteger("LRRotated", LRRotated);
         }
@@ -93,6 +95,7 @@ public class Character : MonoBehaviour
         //무브 벡터 방향으로 점프
         rb.velocity = new Vector3(moveVec.x * MoveSpeed, 12f, moveVec.z * MoveSpeed);
         jumpCnt++;
+        isJumping = true;
     }
 
     void FixedUpdate()
@@ -105,6 +108,7 @@ public class Character : MonoBehaviour
         if (rb.velocity.y == 0)
         {
             jumpCnt = 0;
+            isJumping = false;
         }
     }
 }
