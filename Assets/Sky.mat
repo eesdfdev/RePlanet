@@ -133,6 +133,6 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Player: {r: -100, g: 100, b: 0, a: 0}
-    - _PlayerTransform: {r: 21.228294, g: 1.9501038, b: -1.5786552, a: 0}
+    - _PlayerTransform: {r: -19.187908, g: 4.574272, b: 10.212944, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
