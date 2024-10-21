@@ -15,10 +15,10 @@ public class Character : MonoBehaviour
     public Vector3 moveVec;
     public float MoveSpeed = 5f;
 
-    public int jumpCnt = 0;
-    public bool isJumping = false;
+    public int jumpCnt;
+    public bool isJumping;
     
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
         //animator = GetComponent<Animator>();
@@ -49,7 +49,7 @@ public class Character : MonoBehaviour
         
         int LRRotated = animators[0].GetInteger("LRRotated");
         bool BackRotated = animators[0].GetBool("BackRotated");
-        bool Walking = false;
+        bool Walking;
         bool LRSetted = false;
         {
             if (horizontal != 0)
@@ -88,7 +88,7 @@ public class Character : MonoBehaviour
         moveVec.Normalize(); //이동 벡터 정규화
     }
 
-    private void Jump()
+    void Jump()
     {
         if (jumpCnt >= 2) return;
         
